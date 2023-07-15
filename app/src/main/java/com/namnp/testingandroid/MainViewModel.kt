@@ -25,6 +25,7 @@ import kotlinx.coroutines.flow.reduce
 import kotlinx.coroutines.launch
 
 class MainViewModel(
+    private val dispatchers: DispatcherProvider
 ) : ViewModel() {
 
     val countDownFlow = flow<Int> { // HOT
@@ -36,8 +37,7 @@ class MainViewModel(
             currentValue--
             emit(currentValue)
         }
-    }
-//        .flowOn(dispatchers.main)
+    }.flowOn(dispatchers.main)
 
     private val _stateFlow = MutableStateFlow(0) // COLD
     val stateFlow = _stateFlow.asStateFlow()
@@ -53,13 +53,13 @@ class MainViewModel(
         // BAD: SharedFlow: lost events/emissions when emitting before collecting
         // if want to cache emissions -> use replace in ShareFlow constructor
 //        squareNumber(3)
-        viewModelScope.launch {
+        viewModelScope.launch(dispatchers.main) {
             sharedFlow.collect {
                 delay(2000L)
                 println("FIRST FLOW: The received number is $it")
             }
         }
-        viewModelScope.launch {
+        viewModelScope.launch(dispatchers.main) {
             sharedFlow.collect {
                 delay(3000L)
                 println("SECOND FLOW: The received number is $it")
@@ -70,7 +70,7 @@ class MainViewModel(
     }
 
     fun squareNumber(number: Int) {
-        viewModelScope.launch {
+        viewModelScope.launch(dispatchers.main) {
             _sharedFlow.emit(number * number)
         }
     }
