@@ -68,6 +68,7 @@ dependencies {
     // Room
     implementation "androidx.room:room-runtime:$room_version"
     implementation 'androidx.constraintlayout:constraintlayout:2.1.4'
+    testImplementation 'junit:junit:4.12'
     kapt "androidx.room:room-compiler:$room_version"
     // Kotlin Extensions and Coroutines support for Room
     implementation "androidx.room:room-ktx:$room_version"
@@ -76,6 +77,7 @@ dependencies {
 
     testImplementation 'app.cash.turbine:turbine:0.9.0'
     testImplementation "com.google.truth:truth:1.1.3"
+    androidTestImplementation "com.google.truth:truth:1.1.3"
     testImplementation "org.jetbrains.kotlinx:kotlinx-coroutines-test:1.5.1"
 
     // Kotlin and Kotlin Coroutines
