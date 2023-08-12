@@ -2,10 +2,13 @@ package com.namnp.testingandroid.feature.shopping.di
 
 import android.content.Context
 import androidx.room.Room
+import com.namnp.testingandroid.feature.shopping.data.local.ShoppingDao
 import com.namnp.testingandroid.feature.shopping.utils.Constants.BASE_URL
 import com.namnp.testingandroid.feature.shopping.utils.Constants.DATABASE_NAME
 import com.namnp.testingandroid.feature.shopping.data.local.ShoppingItemDatabase
 import com.namnp.testingandroid.feature.shopping.data.remote.PixabayAPI
+import com.namnp.testingandroid.feature.shopping.repository.DefaultShoppingRepository
+import com.namnp.testingandroid.feature.shopping.repository.ShoppingRepository
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -41,4 +44,12 @@ object AppModule {
             .build()
             .create(PixabayAPI::class.java)
     }
+
+    @Singleton
+    @Provides
+    fun provideDefaultShoppingRepository(
+        dao: ShoppingDao,
+        api: PixabayAPI
+    ) = DefaultShoppingRepository(dao, api) as ShoppingRepository
+    // TODO
 }
