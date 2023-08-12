@@ -1,4 +1,4 @@
-package com.namnp.testingandroid.feature.shopping.constant
+package com.namnp.testingandroid.feature.shopping.utils
 
 object Constants {
 

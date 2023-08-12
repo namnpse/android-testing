@@ -2,8 +2,8 @@ package com.namnp.testingandroid.feature.shopping.di
 
 import android.content.Context
 import androidx.room.Room
-import com.namnp.testingandroid.feature.shopping.constant.Constants.BASE_URL
-import com.namnp.testingandroid.feature.shopping.constant.Constants.DATABASE_NAME
+import com.namnp.testingandroid.feature.shopping.utils.Constants.BASE_URL
+import com.namnp.testingandroid.feature.shopping.utils.Constants.DATABASE_NAME
 import com.namnp.testingandroid.feature.shopping.data.local.ShoppingItemDatabase
 import com.namnp.testingandroid.feature.shopping.data.remote.PixabayAPI
 import dagger.Module
