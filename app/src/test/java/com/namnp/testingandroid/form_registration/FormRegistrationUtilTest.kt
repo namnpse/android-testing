@@ -1,6 +1,7 @@
-package com.namnp.testingandroid.feature.form_registration
+package com.namnp.testingandroid.form_registration
 
 import com.google.common.truth.Truth.assertThat
+import com.namnp.testingandroid.feature.form_registration.FormRegistrationUtil
 import org.junit.Test
 
 class FormRegistrationUtilTest {
