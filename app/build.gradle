@@ -19,7 +19,8 @@ android {
 
         buildConfigField("String", "API_KEY", API_KEY)
 
-        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+//        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+        testInstrumentationRunner "com.namnp.testingandroid.HiltTestRunner"
         vectorDrawables {
             useSupportLibrary true
         }
@@ -133,4 +134,6 @@ dependencies {
 //    // Instrumented Unit Tests
     androidTestImplementation "junit:junit:4.13"
     androidTestImplementation "androidx.arch.core:core-testing:2.2.0"
+    androidTestImplementation 'com.google.dagger:hilt-android-testing:2.37'
+    kaptAndroidTest 'com.google.dagger:hilt-android-compiler:2.42'
 }
