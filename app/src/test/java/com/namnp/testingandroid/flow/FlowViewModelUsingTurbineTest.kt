@@ -8,8 +8,10 @@ import com.namnp.testingandroid.feature.flow.VmState
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.StandardTestDispatcher
+import kotlinx.coroutines.test.resetMain
 import kotlinx.coroutines.test.runTest
 import kotlinx.coroutines.test.setMain
+import org.junit.After
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertTrue
 import org.junit.Before
@@ -55,14 +57,15 @@ class FlowViewModelUsingTurbineTest {
 
     // 2.
     @get:Rule
-    val mockitoRule: MockitoRule = MockitoJUnit.rule()
+//    val mockitoRule: MockitoRule = MockitoJUnit.rule()
+    val dispatcherRule = StandardDispatcherRule() // use custom rule
 
-    @OptIn(ExperimentalCoroutinesApi::class)
+    /*@OptIn(ExperimentalCoroutinesApi::class)
     @Before
     fun setUp() {
         // setting up test dispatcher as main dispatcher for coroutines
         Dispatchers.setMain(StandardTestDispatcher())
-    }
+    }*/
 
     @Test
     fun `Given the sut is initialized, then it waits for event`() {
@@ -106,4 +109,10 @@ class FlowViewModelUsingTurbineTest {
             }
         }
 
+/*    @OptIn(ExperimentalCoroutinesApi::class)
+    @After
+    fun tearDown() {
+        // removing the test dispatcher
+        Dispatchers.resetMain()
+    }*/
 }
