@@ -5,9 +5,14 @@ import com.namnp.testingandroid.feature.flow.FlowViewModel
 import com.namnp.testingandroid.feature.flow.HeavyComputationRepository
 import com.namnp.testingandroid.feature.flow.VmEvent
 import com.namnp.testingandroid.feature.flow.VmState
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.test.StandardTestDispatcher
 import kotlinx.coroutines.test.runTest
+import kotlinx.coroutines.test.setMain
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertTrue
+import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -17,6 +22,25 @@ import org.mockito.junit.MockitoJUnit
 import org.mockito.junit.MockitoRule
 import org.mockito.kotlin.doAnswer
 import org.mockito.kotlin.stub
+
+/*
+- Error: Module with the Main dispatcher had failed to initialize.
+  For tests Dispatchers.setMain from kotlinx-coroutines-test
+- Reason: In code, the app uses the main thread by calling the Dispatchers.Main.
+  However, the unit test does not provide any main thread.
+- Solution: To go around it, the main thread can be mocked by setting the test dispatcher as the main dispatcher for coroutines.
+  It has to be called before executing the test and disposed after finishing the test as follows:
+@Before
+fun setUp() {
+    // setting up test dispatcher as main dispatcher for coroutines
+    Dispatchers.setMain(StandardTestDispatcher())
+}
+
+@After
+fun tearDown() {
+    // removing the test dispatcher
+    Dispatchers.resetMain()
+}*/
 
 @RunWith(JUnit4::class)
 class FlowViewModelUsingTurbineTest {
@@ -32,6 +56,13 @@ class FlowViewModelUsingTurbineTest {
     // 2.
     @get:Rule
     val mockitoRule: MockitoRule = MockitoJUnit.rule()
+
+    @OptIn(ExperimentalCoroutinesApi::class)
+    @Before
+    fun setUp() {
+        // setting up test dispatcher as main dispatcher for coroutines
+        Dispatchers.setMain(StandardTestDispatcher())
+    }
 
     @Test
     fun `Given the sut is initialized, then it waits for event`() {
