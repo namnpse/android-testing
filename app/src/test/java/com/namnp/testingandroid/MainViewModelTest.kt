@@ -28,7 +28,8 @@ class MainViewModelTest {
 //            awaitItem() // wait for the second one
 
             for(i in 5 downTo 0) {
-                testDispatchers.testDispatcher.advanceTimeBy(1000L)
+//                testDispatchers.testDispatcher.advanceTimeBy(1000L)
+                testDispatchers.testDispatcher.scheduler.apply { advanceTimeBy(1000L); runCurrent() }
 //                -> don't have to wait 1s to get result as in VM
                 val emission = awaitItem()
                 assertThat(emission).isEqualTo(i)
