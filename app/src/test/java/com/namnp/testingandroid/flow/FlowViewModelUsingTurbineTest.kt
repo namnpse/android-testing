@@ -1,8 +1,10 @@
 package com.namnp.testingandroid.flow
 
 import app.cash.turbine.test
+import app.cash.turbine.turbineScope
 import com.namnp.testingandroid.feature.flow.FlowViewModel
 import com.namnp.testingandroid.feature.flow.HeavyComputationRepository
+import com.namnp.testingandroid.feature.flow.MultipleFlowViewModel
 import com.namnp.testingandroid.feature.flow.VmEvent
 import com.namnp.testingandroid.feature.flow.VmState
 import kotlinx.coroutines.Dispatchers
@@ -57,15 +59,16 @@ class FlowViewModelUsingTurbineTest {
 
     // 2.
     @get:Rule
-//    val mockitoRule: MockitoRule = MockitoJUnit.rule()
-    val dispatcherRule = StandardDispatcherRule() // use custom rule
+    val mockitoRule: MockitoRule = MockitoJUnit.rule()
+//    val dispatcherRule = MainCoroutineRule() // use custom rule
+//    val dispatcherRule = StandardDispatcherRule() // use custom rule
 
-    /*@OptIn(ExperimentalCoroutinesApi::class)
+    @OptIn(ExperimentalCoroutinesApi::class)
     @Before
     fun setUp() {
         // setting up test dispatcher as main dispatcher for coroutines
         Dispatchers.setMain(StandardTestDispatcher())
-    }*/
+    }
 
     @Test
     fun `Given the sut is initialized, then it waits for event`() {
@@ -109,10 +112,51 @@ class FlowViewModelUsingTurbineTest {
             }
         }
 
-/*    @OptIn(ExperimentalCoroutinesApi::class)
-    @After
+    @Test
+    fun `Given the ViewModel waits - When the event OnLaunch comes, then both computations runs successfully`() =
+        runTest {
+            // testing with multiple state -> need to use `turbineScope`
+            // Every state needs to be tested in the test case, can construct a receiver
+            turbineScope {
+                // ARRANGE
+                val expectedString = "Result"
+                repository.stub {
+                    onBlocking { doComputation() } doAnswer { expectedString }
+                }
+
+                // sut: System Under Test
+                val sut = MultipleFlowViewModel(repository)
+
+                val firstStateReceiver = sut.vmState.testIn(backgroundScope) // similar to .stateIn(viewModelScope)
+                val secondStateReceiver = sut.secondVmState.testIn(backgroundScope)
+
+                // ACTION
+                sut.onEvent(VmEvent.OnLaunch)
+
+                // CHECK
+                assertEquals(VmState.Waiting, firstStateReceiver.awaitItem())
+                assertEquals(VmState.Waiting, secondStateReceiver.awaitItem())
+
+                assertEquals(VmState.Running, firstStateReceiver.awaitItem())
+                assertEquals(VmState.Running, secondStateReceiver.awaitItem())
+
+                assertEquals(VmState.Finished(expectedString), firstStateReceiver.awaitItem())
+                assertEquals(VmState.Finished(expectedString), secondStateReceiver.awaitItem())
+
+                assertEquals(VmState.Waiting, firstStateReceiver.awaitItem())
+                assertEquals(VmState.Waiting, secondStateReceiver.awaitItem())
+
+                // cancel or complete the flows at the end of the test.
+                // Otherwise, the test will hang/timeout will fail the test.
+                firstStateReceiver.cancel()
+                secondStateReceiver.cancel()
+            }
+        }
+
+  @OptIn(ExperimentalCoroutinesApi::class)
+  @After
     fun tearDown() {
         // removing the test dispatcher
         Dispatchers.resetMain()
-    }*/
+    }
 }
