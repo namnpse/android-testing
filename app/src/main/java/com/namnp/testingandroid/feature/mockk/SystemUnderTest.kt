@@ -1,7 +1,12 @@
 package com.namnp.testingandroid.feature.mockk
 
+import kotlin.math.abs
+
 // Dependent-On Component (DOC)
-class Dependency1(val value1: Int)
+class Dependency1(val value1: Int) {
+    fun calculateAbs(number: Int) = abs(number)
+    fun callReturningUnit(number: Int) {}
+}
 class Dependency2(val value2: String)
 
 // System Under Test (SUT)
