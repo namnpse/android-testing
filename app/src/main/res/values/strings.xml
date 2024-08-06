@@ -2,4 +2,8 @@
     <string name="app_name">TestingAndroid</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="error_fetching">Error while retrieving the user</string>
+    <string name="canceled">Retrieving the user is cancelled</string>
+    <string name="user_created">Created the user successfully!</string>
+    <string name="error_creating">Error while creating the user.</string>
 </resources>

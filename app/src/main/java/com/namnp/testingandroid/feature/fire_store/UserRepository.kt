@@ -1,9 +1,10 @@
 package com.namnp.testingandroid.feature.fire_store
 
 import com.google.android.gms.tasks.Task
+import com.namnp.testingandroid.feature.utils.Result
 
 interface UserRepository {
-    fun createUserInFireStore(user: User): Task<Void>
+    suspend fun createUserInFireStore(user: User): Result<Void>
 
-    fun getUserFromFireStore(userId: String): Task<User>
+    suspend fun getUserFromFireStore(userId: String): Result<User?>
 }
