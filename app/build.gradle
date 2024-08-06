@@ -135,6 +135,9 @@ dependencies {
     implementation "androidx.navigation:navigation-fragment-ktx:2.3.0"
     implementation "androidx.navigation:navigation-ui-ktx:2.3.0"
 
+    // Cloud Firestore
+    implementation "com.google.firebase:firebase-firestore:$firestore_version"
+
 //    // Instrumented Unit Tests
     androidTestImplementation "junit:junit:4.13"
     androidTestImplementation "androidx.arch.core:core-testing:2.2.0"
